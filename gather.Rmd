@@ -6,85 +6,20 @@ output: html_document
 ---
 
 ```{r setup, include = FALSE}
-library(httr)
-library(purrr)
+library(janitor)
+library(reprex)
 library(tidyverse)
 library(dplyr)
+library(gt)
+library(naniar)
+library(ggplot2)
+library(rvest)
+library(readr)
+library(tidyr)
+library(forcats)
 ```
 
-```{r 1, include= FALSE}
-
-# I created a token for use with my API request. This requires that I have a client_id and a client_secret, both of which are provided when I create an app through Yelp's developer area.
-
-client_id <- "MW6HVAMO7UmGjhQ0_RiAFw"
-client_secret <- "jw-g1gmzQkcq34A1j_E_J0QBNJfo3AxQUO9S53MWRjaD-fF9yr_IQqt3C_e9D-FONA7KeM2hc_U8_S7wb2ECWZuZ_QamnFKWxK7_FVG43xkYsz1AmOsRadgA_mBVXnYx"
-
-res <- POST("https://api.yelp.com/oauth2/token",
-            body = list(grant_type = "client_credentials",
-                        client_id = client_id,
-                        client_secret = client_secret))
-
-token <- content(res)$access_token
+```{r}
+x <- read_csv("yelp_subset.csv") %>%
+ 
 ```
-
-```{r2, include = FALSE}
-
-# Next, I built the url for my query. In this example, I queried businesses with the term "restaurants" within 5 miles of Boston:
-
-yelp <- "https://api.yelp.com"
-term <- "restaurants"
-location <- "Boston, MA"
-categories <- NULL
-limit <- 50
-radius <- 8000
-url <- modify_url(yelp, path = c("v3", "businesses", "search"),
-                  query = list(term = term, location = location, 
-                               limit = limit,
-                               radius = radius))
-res <- GET(url, add_headers('Authorization' = paste("bearer", token)))
-
-results <- content(res)
-```
-
-```{r3, echo = FALSE}
-
-# Now that I have the data I created a function to parse and format the data.
-
-yelp_httr_parse <- function(x) {
-
-  parse_list <- list(id = x$id, 
-                     name = x$name, 
-                     rating = x$rating, 
-                     review_count = x$review_count, 
-                     latitude = x$coordinates$latitude, 
-                     longitude = x$coordinates$longitude, 
-                     address1 = x$location$address1, 
-                     city = x$location$city, 
-                     state = x$location$state, 
-                     distance = x$distance)
-  
-  parse_list <- lapply(parse_list, FUN = function(x) ifelse(is.null(x), "", x))
-  
-  df <- data_frame(id=parse_list$id,
-                   name=parse_list$name, 
-                   rating = parse_list$rating, 
-                   review_count = parse_list$review_count, 
-                   latitude=parse_list$latitude, 
-                   longitude = parse_list$longitude, 
-                   address1 = parse_list$address1, 
-                   city = parse_list$city, 
-                   state = parse_list$state, 
-                   distance= parse_list$distance)
-  df
-}
-
-results_list <- lapply(results$businesses, FUN = yelp_httr_parse)
-
-payload <- do.call("rbind", results_list)
-
-
-```
-
-
-Sources:\
-https://billpetti.github.io/2017-12-23-use-yelp-api-r-rstats/

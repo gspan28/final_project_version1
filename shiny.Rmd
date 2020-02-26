@@ -1,0 +1,19 @@
+---
+title: "shiny"
+author: "Grace Pan"
+date: "2/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+library(rsconnect)
+rsconnect::deployApp('path/to/your/app')
+
+rsconnect::setAccountInfo(name='gracepan',
+			  token='704F9ACB1A212D254F6A6D873A780B57',
+			  secret='3eISVlx7dKioyWRxlvNnbBgx3T/i93vSd1ASG9xm')
