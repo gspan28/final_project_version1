@@ -369,10 +369,16 @@ summary {
 </div>
 
 
-<p>URL to Repo: <a href="https://github.com/gspan28/final_project_version1" class="uri">https://github.com/gspan28/final_project_version1</a></p>
-<p>My final project entails using Yelp data to analyze the best date spots in various popular US cities, including Boston, New York, and Los Angeles. I am interested in learning about what types of activities are most popular (descriptive) and why (causal/inferential).</p>
+<div id="using-yelp-to-analyze-date-spots-in-popular-metropolitan-areas" class="section level2">
+<h2>Using Yelp to Analyze Date Spots in Popular Metropolitan Areas</h2>
+<p>My final project entails using Yelp data to analyze the best date spots across various metropolitan areas in the United States and Canada. I am interested in learning about what types of activities are most popular for dates (descriptive) and why (causal/inferential).</p>
 <p>In order to gather the data, I need to complete two steps: a) scraping Yelp data, and b) detecting strings of keywords relevant to date spots.</p>
-<p>gather.Rmd in my Repo contains the code I used to scrape Yelp data</p>
+<p>For my milestone this week, I tried many methods to scrape Yelp data. First, I used <a href="https://billpetti.github.io/2017-12-23-use-yelp-api-r-rstats/">this website</a> to attempt to use the Yelp API with R. I could not figure out how to get this to work. Second, I found a <a href="https://www.yelp.com/dataset/download">dataset</a> provided by Yelp, but the problem was it was in JSON rather than R. It was also an enormous file that my computer was unable to process. Finally, I found <a href="https://www.kaggle.com/yelp-dataset/yelp-dataset/data">several CSV files</a> including a subset of Yelp’s business, reviews, and user data. This is ultimately what I chose to work with.</p>
+<p>The Kaggle dataset has 5,200,000 user reviews, information on 174,000 businneses, and the data spans 11 metropolitan areas. This is too much data for my computer to process, so I used the IQSS computers in CGIS North (per Mitchell’s suggestion) to filter for seven major cities to diminish the dataset in Excel. Although the cities included in this dataset (Montreal, QC; Madison, WI; Pittsburgh, PA; Toronto, ON; Cleveland, OH; Las Vegas, NV; and Charlotte, NC) are not the ones I anticipated researching, I am now looking forward to explore the use of Yelp in geographically diverse metropolitan cities across the US and Canada.</p>
+<p>For my next steps, I plan to join the data from several CSV files. I have successfully imported the business overview data into R, which includes restaurant ratings, but I still have to import data about the reviews and tips. Again, my problem is that these two datasets are too big to import, so I will first have to filter to narrow down the data in Excel for the seven relevant cities.</p>
+<p>Another problem I have is that the data does not match easily with the business overview dataset. The only common variable is the business ID. I plan to use the inner_join() function to merge these datasets, as soon as I figure out how to successfully import the two large datasets for reviews and tips. With these three datasets, I will tehn detect strings of keywords in the restaurant reviews relevant to dating.</p>
+<p>You can see the dataset in my <a href="https://github.com/gspan28/final_project_version1">Github repo</a> in the gather.Rmd file. <a href="https://www.kaggle.com/ambarish/a-very-extensive-data-analysis-of-yelp">This</a> is a good example of the type of analysis I want to do once I clean and combine the data.</p>
+</div>
 
 
 
