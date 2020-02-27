@@ -20,6 +20,8 @@ output: html_document
  
  Another problem I have is that the data does not match easily with the business overview dataset. The only common variable is the business ID. I plan to use the inner_join() function to merge these datasets, as soon as I figure out how to successfully import the two large datasets for reviews and tips. With these three datasets, I will then detect strings of keywords in the restaurant reviews relevant to dating. 
  
+ After talking with Preceptor during his office hours Thursday morning, he approved my method for the milestone but encouraged me to wrestle with the Yelp dataset more before resorting to the Kaggle dataset, so I will work with the Yelp dataset for the milestone next week. 
+ 
  You can see the dataset in my [Github repo](https://github.com/gspan28/final_project_version1) in the gather.Rmd file. [This](https://www.kaggle.com/ambarish/a-very-extensive-data-analysis-of-yelp 
 ) is a good example of the type of analysis I want to do once I clean and combine the data. 
  
