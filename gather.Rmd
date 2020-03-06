@@ -22,15 +22,12 @@ library(readr)
 ```{r 1, echo = FALSE}
 biz <- read_csv("yelp_subset.csv") 
 tip <- read_csv("yelp_tip1.csv") 
-review <- read_csv("yelp_review.csv") 
-
-review_slice <- review %>%
-  slice(1:10000)
+review_1000 <- read_csv("yelp_review_1000.csv") 
 
 biz_tip_join <- biz %>%
   full_join(tip, by = "business_id")
 
 biz_tip_review_join <- biz_tip_join %>%
-  full_join(review_slice, by = "business_id")
+  full_join(review_1000, by = "business_id")
  
 ```
