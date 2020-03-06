@@ -32,7 +32,5 @@ biz_tip_join <- biz %>%
 
 biz_tip_review_join <- biz_tip_join %>%
   full_join(review_slice, by = "business_id")
-
-  
  
 ```
