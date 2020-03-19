@@ -382,6 +382,9 @@ summary {
 <p>Using the Kaggle CSV files, I have successfully imported the business overview data into R, which includes restaurant ratings. This week, I browsed through the other CSV files and determined which ones would be most useful to me. Two files, yelp_tip and yelp_review will be useful because they will allow me to complete the second step of my project, detecting strings of keywords relevant to date spots.</p>
 <p>This week, I imported the yelp_tip and yelp_review datasets in order to test if my workflow is feasible or not. Because the only common variable between datasets yelp_business, yelp_tip, and yelp_review is the business ID, I used full_join() function to merge these datasets.Now, I have the merged datasets in order to conduct the next steps of my data analysis.</p>
 <p>Because of how large my files are, I am having trouble pushing to Github. For this milestone, I have submitted the html for “about” and “gather” and am currently troubleshooting, with Preceptor’s help, to push to Github.</p>
+<hr />
+<p>For my week 5 milestone, first I cleaned up my joined data, using the datasets in the raw-data folder, yelp_review_1000.csv, yelp_subset.csv, and yelp_tip_200.csv. I removed the NA’s in the text and business name columns from the joined datasets. Now, I have a clean dataset with rows that list a business’ name, # of stars, category, location, and review, etc.</p>
+<p>Then, I made three visualizations of the 10 Most Popular Categories of Business, a Map of Business Parties in Las Vegas, and a Map of Business Parties in Montreal. See gather_draft1.Rmd.</p>
 </div>
 
 

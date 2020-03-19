@@ -31,5 +31,10 @@ This week, I imported the yelp_tip and yelp_review datasets in order to test if 
 
 Because of how large my files are, I am having trouble pushing to Github. For this milestone, I have submitted the html for "about" and "gather" and am currently troubleshooting, with Preceptor's help, to push to Github.
 
+---
+
+For my week 5 milestone, first I cleaned up my joined data, using the datasets in the raw-data folder, yelp_review_1000.csv, yelp_subset.csv, and yelp_tip_200.csv. I removed the NA's in the text and business name columns from the joined datasets. Now, I have a clean dataset with rows that list a business' name, # of stars, category, location, and review, etc.
+
+Then, I made three visualizations of the 10 Most Popular Categories of Business, a Map of Business Parties in Las Vegas, and a Map of Business Parties in Montreal. See gather_draft1.Rmd. 
 
  
