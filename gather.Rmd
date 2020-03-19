@@ -6,28 +6,135 @@ output: html_document
 ---
 
 ```{r setup, include = FALSE}
-# library(janitor)
-# library(reprex)
-# library(tidyverse)
-library(dplyr)
-# library(gt)
-# library(naniar)
-# library(ggplot2)
-# library(rvest)
-library(readr)
-# library(tidyr)
-# library(forcats)
+
+fillColor = "#D32323" # yelpy-red
+fillColor2 = "#0073BB" # blue
+
+library(tidyverse) #  data manipulation and graphs
+library(stringr) #  string manipulation
+library(lubridate) #  date manipulation
+library('wordcloud') #  wordcloud
+library(tidytext) # tidy implementation of NLP methods
+library(DT)       # table format display of data
+library(leaflet) # maps
+library(ggplot2)
+
+# library(igraph) #  graphs
+# library(ggraph) #  graphs
+# 
+# library(topicmodels) # for LDA topic modelling 
+# library(tm) # general text mining functions, making document term matrixes
+# library(SnowballC) # for stemming
+
+library(textcat)
 ```
 
+The following visualizations analyze a subset of Yelp data in seven metropolitan cities: Montreal, QC; Madison, WI; Pittsburgh, PA; Toronto, ON; Cleveland, OH; Las Vegas, NV; and Charlotte, NC.
+
 ```{r 1, include = FALSE}
-biz <- read_csv("yelp_subset.csv") 
-tip <- read_csv("yelp_tip1.csv") 
-review <- read_csv("yelp_review.csv") 
 
-biz_tip_join <- biz %>%
-  full_join(tip, by = "business_id")
+# Read in data sets and joined together biz/tip and biz/review.
 
-biz_tip_review_join <- biz_tip_join %>%
-  full_join(review, by = "business_id")
+business <- read_csv("raw-data/yelp_subset.csv") 
+tip <- read_csv("raw-data/yelp_tip_2000.csv") 
+reviews <- read_csv("raw-data/yelp_review_1000.csv") 
+
+business_tip_join <- business %>%
+  full_join(tip, by = "business_id") %>%
+  filter(! is.na(text), ! is.na(name))
+
+business_reviews_join <- business %>%
+  full_join(reviews, by = "business_id") %>%
+  filter(! is.na(text), ! is.na(name))
  
+```
+
+## 10 Most Popular Categories of Business
+
+```{r 2, echo = FALSE}
+
+# PLOTTING THE 10 MOST POPULAR CATEGORIES OF BUSINESS IN A BAR PLOT
+
+# Made a new tibble called categories. I used str_split to separate the descriptors originally divided by semicolons. I renamed the categories column as "Name."
+
+categories = str_split(business$categories,";")
+categories = as.data.frame(unlist(categories))
+colnames(categories) = c("Name")
+
+# Found the top 10 categories of business by grouping, counting, and arranging in descending order. 
+
+categories_head <- categories %>%
+  group_by(Name) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count)) %>%
+  ungroup() %>%
+  mutate(Name = reorder(Name,Count)) %>%
+  head(10) 
+
+# Plotted the top ten categories of business in a bar plot and formatted accordingly. 
+
+categories_head_plot <- categories_head %>%
+  ggplot(aes(x = Name,y = Count)) +
+  geom_bar(stat='identity', colour="white", fill =fillColor) +
+  geom_text(aes(x = Name, y = 1, label = paste0("(",Count,")",sep="")),
+            hjust=0, vjust=.5, size = 4, colour = 'black',
+            fontface = 'bold') +
+  labs(x = 'Name of Category', y = 'Count', 
+       title = 'Top 10 Categories of Business',
+       subtitle = "Restaurants, Food, and Shopping Business Prove Most Popular",
+       caption = "Source: Yelp") +
+  coord_flip() + 
+  theme_bw()
+
+categories_head_plot
+ 
+```
+
+## Map of Business Parties in Las Vegas
+
+```{r 3, echo = FALSE}
+
+# MAP OF BUSINESS PARTIES IN LAS VEGAS
+
+# Filtered for all businesses located in Las Vegas. Used median longitude and latitude coordinates in dataset to set the view of the map.
+
+LasvegasCoords = business %>% filter(city == "Las Vegas")
+
+center_lon = median(LasvegasCoords$longitude,na.rm = TRUE)
+center_lat = median(LasvegasCoords$latitude,na.rm = TRUE)
+
+# Layered coordinates onto National Geographic World Map. Formatted settings of map.
+las_vegas_map <- leaflet(LasvegasCoords) %>% 
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  addCircles(lng = ~longitude, lat = ~latitude,radius = ~sqrt(review_count))  %>%
+  setView(lng=center_lon, lat=center_lat,zoom = 13)
+
+las_vegas_map 
+
+
+```
+
+## Map of Business Parties in Montreal 
+
+```{r 4, echo = FALSE}
+
+# MAP OF BUSINESS PARTIES IN MONTREAL
+
+# Filtered for all businesses located in Montreal. Used median longitude and latitude coordinates in dataset to set the view of the map.
+
+
+MontrealCoords = business %>% filter(city == "Montreal")
+
+center_lon = median(MontrealCoords$longitude,na.rm = TRUE)
+center_lat = median(MontrealCoords$latitude,na.rm = TRUE)
+
+# Layered coordinates onto National Geographic World Map. Formatted settings of map.
+
+montreal_map <- leaflet(MontrealCoords) %>% 
+  addProviderTiles("Esri.NatGeoWorldMap") %>%
+  addCircles(lng = ~longitude, lat = ~latitude,radius = ~sqrt(review_count))  %>%
+  setView(lng=center_lon, lat=center_lat,zoom = 13)
+
+montreal_map 
+
 ```
